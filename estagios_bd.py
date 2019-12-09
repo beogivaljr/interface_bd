@@ -1,18 +1,12 @@
 import pyrebase
-from faker import Faker
-import json
-import names
-from random import randint
 
 if __name__ == '__main__':
 
-    faker = Faker('pt_BR')
-
     config = {
-        "apiKey": "AIzaSyAd5C78W8YcEVhWHHtJPVcKb3QMxLnTU-k",
-        "authDomain": "projetobd-b2fd9.firebaseapp.com",
-        "databaseURL": "https://projetobd-b2fd9.firebaseio.com",
-        "storageBucket": "projetobd-b2fd9.appspot.com"
+        'apiKey': 'AIzaSyAd5C78W8YcEVhWHHtJPVcKb3QMxLnTU-k',
+        'authDomain': 'projetobd-b2fd9.firebaseapp.com',
+        'databaseURL': 'https://projetobd-b2fd9.firebaseio.com',
+        'storageBucket': 'projetobd-b2fd9.appspot.com'
     }
 
     firebase = pyrebase.initialize_app(config)
@@ -26,81 +20,8 @@ if __name__ == '__main__':
     # Get a reference to the database service
     db = firebase.database()
 
-    # Alunos
-    # nusp = 8992836  # Valor inicial
-    #
-    # for i in range(100):
-    #     courses = ['Engenharia de Computação', 'Engenharia Civil', 'Engenharia Elétrica']
-    #     course_index = randint(0, 2)
-    #
-    #     # data to save
-    #     aluno = {
-    #         'nome': f'{faker.name()}',
-    #         'curso': f'{courses[course_index]}',
-    #         'periodo': f'{randint(1, 10)}',
-    #         'telefone': f'(11) 9{randint(8000, 9999)}-{randint(1000, 9999)}'
-    #     }
-    #
-    #     results = db.child('aluno').child(f'{nusp}').set(aluno)
-    #     nusp += 1
-    #     print(results)
-
-    # Empresas
-    # for i in range(6):
-    #     companies = ['M2Y', 'Outsmart', 'BTG', 'tembici', 'itau', 'livup']
-    #
-    #     # data to save
-    #     companie = {
-    #         'nome': f'{companies[i]}',
-    #         'email': str(names.get_first_name()) + "@gmail.com",
-    #         'telefone': f'(11) {randint(2000, 9999)}-{randint(1000, 9999)}'
-    #     }
-    #
-    #     results = db.child('empresa').child(f'{randint(10000000000000, 99999999999999)}').set(companie)
-    #     print(results)
-
-    # Curriculo
-    # nusp = 8992836  # Valor inicial
-    #
-    # for i in range(100):
-    #     # data to save
-    #     curriculo = {
-    #         'nusp': f'{nusp}',
-    #         'pretensão salarial': f'{randint(1500, 4000)}',
-    #         'experiencia web': f'{randint(0, 5)}',
-    #         'experiencia mobile': f'{randint(0, 5)}',
-    #         'experiencia backend': f'{randint(0, 5)}'
-    #     }
-    #
-    #     results = db.child('curriculo').push(curriculo)
-    #     nusp += 1
-    #     print(results)
-
-    # Vagas
-    # for i in range(60):
-    #     companies = ['19108766731792', '28873925165220', '44113054680588', '58698868711024', '60762866327293', '63730340628396']
-    #     # data to save
-    #     vaga = {
-    #         'cnpj': companies[randint(0, 5)],
-    #         'requisito web': f'{randint(0, 5)}',
-    #         'requisito mobile': f'{randint(0, 5)}',
-    #         'requisito backend': f'{randint(0, 5)}',
-    #         'bolsa': f'{randint(1500, 4000)}',
-    #     }
-    #
-    #     results = db.child('vaga').push(vaga)
-    #     print(results)
-
-    # Contrato
-    # contrato: {
-    #     nusp: '',
-    #     cnpj: '',
-    #     vaga: '',
-    #     duração: f'{randint(4, 12)}',
-    # }
-
     while True:
-        print('Bem vindo ao EstagiUSP!')
+        print('\n\n########################\nBem vindo ao EstagiUSP!\n########################\n\n')
         print('1.Cadastrar   2.Pesquisar   3.Match')
         command = input('Escolha a operação: ')
 
@@ -108,6 +29,8 @@ if __name__ == '__main__':
             print('1.Aluno   2.Empresa   3.Currículo   4.Vaga')
             command = input('Escolha a operação: ')
             if '1' in command:
+                print('\n##################')
+                print('Cadastrando novo aluno!')
                 nome = input('Digite o nome do aluno: ')
                 nusp = input('Digite o número USP do aluno: ')
                 curso = input('Digite o curso do aluno: ')
@@ -118,7 +41,7 @@ if __name__ == '__main__':
                 aluno = {
                     'nome': f'{nome}',
                     'curso': f'{curso}',
-                    'periodo': f'{periodo}',
+                    'período': f'{periodo}',
                     'telefone': f'{telefone}'
                 }
 
@@ -138,21 +61,34 @@ if __name__ == '__main__':
                             break
                         elif '2' in command:
                             input_nome = input('Digite o nome da empresa: ')
-                            empresa = db.child("empresa").order_by_child("nome").equal_to(input_nome).get()
-                            print(empresa.val())
+                            empresa = db.child('empresa').order_by_child('nome').equal_to(input_nome).get()
+
+                            for key, value in empresa.val().items():
+                                print('##################')
+                                name = value['nome']
+                                email = value['email']
+                                telefone = value['telefone']
+                                company_name = '\nNome da empresa: ' + name
+                                mask_key = f'{key[:2]}.{key[2:5]}.{key[5:8]}/{key[8:12]}-{key[12:]}'
+                                cnpj = '\nCNPJ: ' + mask_key
+                                email_info = '\nE-mail da empresa: ' + email
+                                phone_info = '\nTelefone para contato: ' + telefone
+                                print(f'{company_name}{cnpj}{email_info}{phone_info}')
+
                             break
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        print(e)
 
         elif '3' in command:
             while True:
+                print('\n##################')
                 nome = input('Digite o nome do aluno: ')
-                aluno = db.child('aluno').order_by_child("nome").equal_to(nome).get()
+                aluno = db.child('aluno').order_by_child('nome').equal_to(nome).get()
                 try:
                     for nusp, value in aluno.val().items():
-                        curriculo = db.child("curriculo").order_by_child("nusp").equal_to(nusp).get()
+                        curriculo = db.child('curriculo').order_by_child('nusp').equal_to(nusp).get()
                         for key, curriculo in curriculo.val().items():
-                            vagas = db.child("vaga").get()
+                            vagas = db.child('vaga').get()
                             vagas_combinadas = []
                             keys_vagas_combinadas = []
                             for key_vaga, vaga in vagas.val().items():
@@ -167,7 +103,7 @@ if __name__ == '__main__':
                             i = 0
                             for vaga_combinada in vagas_combinadas:
                                 i += 1
-                                empresa = db.child("empresa").child(vaga_combinada['cnpj']).get()
+                                empresa = db.child('empresa').child(vaga_combinada['cnpj']).get()
                                 empresas_combinadas.append(empresa)
                                 nome_empresa = empresa.val()['nome']
                                 bolsa_empresa = vaga_combinada['bolsa']
@@ -179,7 +115,9 @@ if __name__ == '__main__':
                                 'vaga': keys_vagas_combinadas[i-1]
                             }
                             db.child('contrato').push(contrato)
-                            print('\n\n############\nParabéns, você está contratado!\n############\n\n')
+                            print('\n\n########################\n\
+                            Parabéns, você está contratado!\n########################\n\n')
                     break
-                except Exception:
-                    print('Aluno não encontrado!')
+                except Exception as e:
+                    print(e)
+                    print('\n#####################\nAluno não encontrado!\n#####################\n')
