@@ -1,3 +1,8 @@
+# Trabalho de PCS 3623 - Banco de dados I
+# Alunos:
+#   - Beogival Wagner Lucas Santos Junior NUSP: 8992836
+#   - Rafael Camargos Santos NUSP: 8041564
+
 import pyrebase
 
 if __name__ == '__main__':
