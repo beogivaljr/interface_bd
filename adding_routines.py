@@ -3,7 +3,7 @@ import json
 import names
 from random import randint
 
-# Alunos
+#     Alunos
 #     nusp = 8992836  # Valor inicial
 #
 #     for i in range(100):
@@ -48,7 +48,7 @@ from random import randint
 #             'experiencia mobile': f'{randint(0, 5)}',
 #             'experiencia backend': f'{randint(0, 5)}'
 #         }
-#
+
 #         results = db.child('curriculo').push(curriculo)
 #         nusp += 1
 #         print(results)
